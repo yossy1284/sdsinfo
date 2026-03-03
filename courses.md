@@ -1,6 +1,6 @@
 # SDS 授業情報
 
-| カテゴリ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 授業名 | 授業内容 | 開講日時&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 担当教員 | 評価基準&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 難易度_単位 | 難易度_成績 | A+ | A | B | C | F |
+| カテゴリ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 授業名 | 授業内容 | 開講日時&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 担当教員 | 評価基準&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 難易度_単位 | 難易度_成績 | A+ | A | B | C | F |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | ソーシャル・データサイエンス科目 | ソーシャル・データサイエンス入門Ⅰ | １年生必修。自動登録。月１で大変だが、出席を取るので注意。講義前半では様々な分野とデータサイエンスの関係を学び、後半ではグループでプレゼンを行う。 | 春夏 月１ | 七丈直弘 | 授業参加 プレゼン レポート | 2 | 3 | 12.3 | 17.8 | 56.2 | 8.2 | 5.5 |
 | ソーシャル・データサイエンス科目 | ソーシャル・データサイエンス入門Ⅱ | １年生必修。自動登録。グループで国立市の団体と協力して調査や分析を実際に行う課外学習が主となる。2年生(TA)による出欠チェックあり。十分な授業外活動が必要。 | 秋冬 火３ | 檜山敦 | 授業参加 プレゼン レポート | 3 | 4 | 9.2 | 21.5 | 55.4 | 7.7 | 6.2 |
