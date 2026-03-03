@@ -2,7 +2,7 @@
 let allCourses = [];
 let activeCategories = new Set();
 let searchQuery = '';
-let yearFilter = '';
+let kubunFilter = '';
 
 /* ========== Category Mapping ========== */
 const CAT_MAP = {
@@ -20,7 +20,7 @@ const GRADE_COLORS = {
   'F':  { cls: 'g-f',     color: 'var(--grade-f)' },
 };
 
-const HEADERS = ['カテゴリ','授業名','授業内容','開講日時','担当教員','評価基準','難易度_単位','難易度_成績','A+','A','B','C','F'];
+const HEADERS = ['カテゴリ','授業名','授業内容','開講日時','担当教員','評価基準','難易度_単位','難易度_成績','A+','A','B','C','F','科目区分'];
 
 /* ========== Init ========== */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -54,15 +54,6 @@ function parseCSV(text) {
   });
 }
 
-/* ========== Detect Year ========== */
-function detectYear(course) {
-  const d = course['授業内容'];
-  if (d.includes('１年生')) return 1;
-  if (d.includes('２年生')) return 2;
-  if (d.includes('３年生')) return 3;
-  if (d.includes('４年生')) return 4;
-  return 0;
-}
 
 /* ========== Rendering ========== */
 function renderCourses(courses) {
@@ -191,9 +182,9 @@ function initFilters() {
     }, 200);
   });
 
-  // Year filter
-  document.getElementById('year-filter').addEventListener('change', (e) => {
-    yearFilter = e.target.value;
+  // Kubun filter
+  document.getElementById('kubun-filter').addEventListener('change', (e) => {
+    kubunFilter = e.target.value;
     applyFilters();
   });
 }
@@ -208,10 +199,9 @@ function applyFilters() {
       const haystack = (c['授業名'] + c['授業内容'] + c['担当教員']).toLowerCase();
       if (!haystack.includes(q)) return false;
     }
-    // Year
-    if (yearFilter) {
-      const y = detectYear(c);
-      if (y !== parseInt(yearFilter) && y !== 0) return false;
+    // Kubun
+    if (kubunFilter) {
+      if (c['科目区分'] !== kubunFilter) return false;
     }
     return true;
   });
