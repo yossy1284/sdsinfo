@@ -1037,6 +1037,8 @@ a:hover {
   .topbar-inner {
     flex-wrap: wrap;
     align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .brand-home {
@@ -1084,9 +1086,42 @@ a:hover {
     padding: 1.05rem;
   }
 
+  .article-head {
+    margin-bottom: 0.5rem;
+  }
+
+  .article-title {
+    font-size: 1.25rem;
+  }
+
+  .infobox {
+    display: none;
+  }
+
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .search-input {
+    flex: unset;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .filter-group {
+    gap: 0.35rem;
+  }
+
+  .cat-btn {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.55rem;
+  }
+
+  .filter-select {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.78rem;
   }
 
   .card-grid {
