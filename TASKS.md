@@ -6,6 +6,7 @@
 - [x] `courses.md` を 2026 年度版に更新
 - [x] 変更履歴 (`changelog.md`, `README.md`) を作成
 - [x] `courses.csv` と `courses.md` を同期
+- [x] `courses.md` を廃止（`docs/courses.csv` に一本化）
 - [x] GitHub Pages サイトを構築（HTML/CSS/JS）
   - [x] `index.html` — ページ構造・ナビゲーション
   - [x] `style.css` — デザイン・レスポンシブ対応
