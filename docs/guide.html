@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>履修ガイド | SDS履修百科</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div class="brand-text">
+          <strong>SDS履修百科</strong>
+          <span>Student Data Science Wiki</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="index.html" class="nav-link">トップ</a>
+        <a href="#courses" class="nav-link active">科目一覧</a>
+        <a href="#guide" class="nav-link">履修ガイド</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>目次</h2>
+      <ul>
+        <li><a href="index.html">トップページ</a></li>
+        <li><a href="#lead">概要</a></li>
+        <li><a href="#courses">科目一覧</a></li>
+        <li><a href="#guide">履修ガイド</a></li>
+      </ul>
+      <div class="side-note">
+        <p>非公式編集版</p>
+        <p>最終更新: 2026年度版</p>
+      </div>
+    </aside>
+
+    <main class="content">
+      <article class="article">
+        <section id="lead" class="lead-block">
+          <h1>SDS履修ガイドブック 2026</h1>
+          <p>
+            本ページは一橋大学ソーシャル・データサイエンス学部の履修情報をまとめた
+            非公式の学生編集サイトです。正確な情報は必ず公式シラバスを確認してください。
+          </p>
+        </section>
+
+        <section id="courses" class="section">
+          <div class="title-row">
+            <h2 class="section-title">科目一覧</h2>
+          </div>
+
+          <div class="filter-bar">
+            <input type="text" id="search" class="search-input" placeholder="科目名・教員名で検索">
+            <div class="filter-group">
+              <div class="category-filters" id="category-filters"></div>
+              <select id="year-filter" class="filter-select">
+                <option value="">全学年</option>
+                <option value="1">1年生</option>
+                <option value="2">2年生</option>
+                <option value="3">3年生</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="result-count" id="result-count"></p>
+
+          <div class="card-grid" id="card-grid">
+            <p class="loading">読み込み中...</p>
+          </div>
+        </section>
+
+        <section id="guide" class="section section-guide">
+          <div class="title-row">
+            <h2 class="section-title">履修ガイド</h2>
+          </div>
+          <div class="guide-content" id="guide-content">
+            <p class="loading">読み込み中...</p>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>本ガイドブックは学生有志による非公式資料です。必ず公式情報を確認してください。</p>
+    <p>お問い合わせ: <a href="https://x.com/SDS_info2024" target="_blank" rel="noopener noreferrer">@SDS_info2024</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
