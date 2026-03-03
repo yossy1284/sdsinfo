@@ -171,8 +171,8 @@ a:hover {
 
 .hamburger-line {
   display: block;
-  width: 22px;
-  height: 2px;
+  width: 24px;
+  height: 2.5px;
   background: var(--text);
   border-radius: 2px;
   transition: transform 0.25s, opacity 0.25s;
@@ -1029,6 +1029,17 @@ a:hover {
 
   .hamburger {
     display: flex;
+    flex-shrink: 0;
+  }
+
+  .brand-block {
+    overflow: hidden;
+  }
+
+  .brand-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .topbar-menu {
