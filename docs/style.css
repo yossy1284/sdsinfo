@@ -13,10 +13,10 @@
   --accent: #4f545e;
   --accent-soft: #f4efaf;
 
-  --cat-sds: #d4c82b;
-  --cat-social: #9ea1a8;
-  --cat-ds: #4f545e;
-  --cat-pace: #3b3f46;
+  --cat-sds: #7654b4;
+  --cat-social: #cd873d;
+  --cat-ds: #3a72bd;
+  --cat-pace: #c44a48;
 
   --kubun-intro: #15803d;
   --kubun-basic: #0f766e;
@@ -111,6 +111,7 @@ a:hover {
 
 .topbar-inner {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
@@ -122,6 +123,8 @@ a:hover {
   align-items: center;
   gap: 0.75rem;
   color: inherit;
+  flex: 1 1 320px;
+  min-width: 0;
 }
 
 .brand-home:hover {
@@ -194,6 +197,9 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  justify-content: flex-end;
+  flex: 1 1 560px;
+  min-width: 0;
 }
 
 .topnav-link {
@@ -204,6 +210,7 @@ a:hover {
   font-weight: 700;
   color: var(--text);
   transition: background-color 0.18s, border-color 0.18s, color 0.18s;
+  white-space: nowrap;
 }
 
 .topnav-link:hover {
@@ -485,7 +492,7 @@ a:hover {
 }
 
 .article-head {
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .article-title {
@@ -503,8 +510,8 @@ a:hover {
 
 .intro-grid {
   display: grid;
-  grid-template-columns: 1.4fr 0.9fr;
-  gap: 1rem;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
 }
 
 .intro-text p + p {
@@ -512,6 +519,7 @@ a:hover {
 }
 
 .infobox {
+  display: none;
   border: 1px solid #d4c82b;
   border-radius: 14px;
   padding: 0.9rem;
@@ -994,6 +1002,15 @@ a:hover {
 }
 
 @media (max-width: 980px) {
+  .topbar-inner {
+    align-items: flex-start;
+  }
+
+  .topbar-menu {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .wiki-layout {
     grid-template-columns: 1fr;
   }
@@ -1041,7 +1058,6 @@ a:hover {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
   .topbar-menu {
     display: none;
     width: 100%;
