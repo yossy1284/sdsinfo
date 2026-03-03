@@ -29,7 +29,7 @@
 
 ## GitHub Pages サイト
 
-**URL**: https://yossy1284.github.io/sdsinfo/
+**URL**: https://sds-info.github.io/SDSwiki/
 
 `courses.csv` や `guide.md` を編集して push するだけでサイトに自動反映。ビルド不要。
 
