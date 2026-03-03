@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   initNav();
+  initHamburger();
 });
 
 function hasCourseIndex() {
@@ -363,6 +364,28 @@ function esc(str) {
   const el = document.createElement('span');
   el.textContent = str;
   return el.innerHTML;
+}
+
+/* ========== Hamburger Menu ========== */
+function initHamburger() {
+  const btn = document.querySelector('.hamburger');
+  const menu = document.querySelector('.topbar-menu');
+  if (!btn || !menu) return;
+
+  btn.addEventListener('click', () => {
+    const isOpen = btn.classList.toggle('open');
+    menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+  });
+
+  // メニュー内リンクをクリックしたら閉じる
+  menu.querySelectorAll('.topnav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
 }
 
 /* ========== Navigation ========== */

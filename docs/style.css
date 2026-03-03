@@ -157,6 +157,39 @@ a:hover {
   color: var(--primary-strong);
 }
 
+/* ---- Hamburger button ---- */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+.hamburger.open .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .topbar-menu {
   display: flex;
   flex-wrap: wrap;
@@ -985,12 +1018,35 @@ a:hover {
   }
 
   .topbar-inner {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .brand-home {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hamburger {
+    display: flex;
   }
 
   .topbar-menu {
+    display: none;
     width: 100%;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .topbar-menu.open {
+    display: flex;
+  }
+
+  .topbar-menu .topnav-link {
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.85rem;
   }
 
   .directory-head {
