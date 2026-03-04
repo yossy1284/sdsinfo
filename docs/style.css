@@ -959,6 +959,149 @@ a:hover {
   line-height: 1.5;
 }
 
+/* ========== Zemi Visual Bars ========== */
+.zemi-visual-bars {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fafaf6;
+}
+
+.zemi-bar-item {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.zemi-bar-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.zemi-bar-value {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* 形態 spectrum bar */
+.zemi-spectrum-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.zemi-spectrum-end {
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.zemi-spectrum-end.left { color: var(--zemi-zemi); }
+.zemi-spectrum-end.right { color: var(--zemi-lab); }
+
+.zemi-spectrum-bar {
+  position: relative;
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--zemi-zemi), var(--zemi-mid) 50%, var(--zemi-lab));
+  opacity: 0.3;
+}
+
+.zemi-spectrum-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--text);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  z-index: 1;
+}
+
+.zemi-spectrum-marker-label {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+/* 活動時間 range bar */
+.zemi-range-wrap {
+  position: relative;
+}
+
+.zemi-range-bar {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  overflow: hidden;
+}
+
+.zemi-range-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  min-width: 6px;
+}
+
+.zemi-range-ticks {
+  position: relative;
+  height: 18px;
+  margin-top: 2px;
+}
+
+.zemi-range-tick {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+/* 院進検討率 bar */
+.zemi-pct-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.zemi-pct-bar {
+  flex: 1;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  overflow: hidden;
+}
+
+.zemi-pct-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #60a5fa, #3b82f6);
+  transition: width 0.4s ease;
+}
+
+.zemi-pct-value {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text);
+  min-width: 3em;
+  text-align: right;
+}
+
 .no-grade-data {
   color: var(--text-muted);
   font-size: 0.85rem;

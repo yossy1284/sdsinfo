@@ -410,6 +410,17 @@ function esc(str) {
   return el.innerHTML;
 }
 
+function parseActivityTime(str) {
+  const s = str.replace(/[〜～]/g, '~');
+  const range = s.match(/(\d+)\s*~\s*(\d+)/);
+  if (range) return { min: parseInt(range[1]), max: parseInt(range[2]) };
+  const prefix = s.match(/^~\s*(\d+)/);
+  if (prefix) return { min: 0, max: parseInt(prefix[1]) };
+  const num = parseInt(s);
+  if (!isNaN(num)) return { min: num, max: num };
+  return { min: 0, max: 0 };
+}
+
 function linkify(html) {
   return html.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
 }
@@ -541,11 +552,12 @@ function openZemiModal(zemi) {
     html += '</dl>';
   }
 
-  // Student info section
-  const studentFields = [
-    ['形態', zemi['"研究室"or"ゼミ"']],
-    ['活動時間（週）', zemi['活動時間_週'] ? zemi['活動時間_週'] + ' 時間' : ''],
-    ['新B4の院進検討率', zemi['院進検討率']],
+  // Student info section — visual bars for 形態 / 活動時間 / 院進検討率
+  const keitai = (zemi['"研究室"or"ゼミ"'] || '').trim();
+  const katsudou = (zemi['活動時間_週'] || '').trim();
+  const inshin = (zemi['院進検討率'] || '').trim();
+
+  const studentTextFields = [
     ['新B4の人数', zemi['新B4の人数'] ? zemi['新B4の人数'] + '人' : ''],
     ['3年次の内容', zemi['3年次の内容']],
     ['取っておいた方がいい授業', zemi['取っておいた方がいい授業']],
@@ -557,17 +569,81 @@ function openZemiModal(zemi) {
     ['進路（院卒）', zemi['進路(院卒)']],
   ];
 
-  const hasStudent = studentFields.some(([, val]) => val && val.trim());
+  const hasBars = keitai || katsudou || inshin;
+  const hasTextFields = studentTextFields.some(([, val]) => val && val.trim());
+  const hasStudent = hasBars || hasTextFields;
 
   if (hasStudent) {
     html += '<p class="grade-section-title">学生情報</p>';
-    html += '<dl class="modal-info">';
-    studentFields.forEach(([label, val]) => {
-      if (val && val.trim()) {
-        html += `<dt>${label}</dt><dd>${esc(val)}</dd>`;
+
+    // Visual bars
+    if (hasBars) {
+      html += '<div class="zemi-visual-bars">';
+
+      // 形態 bar
+      if (keitai) {
+        const pos = keitai === 'ゼミ' ? 0 : keitai === '中間' ? 50 : 100;
+        html += '<div class="zemi-bar-item">';
+        html += '<div class="zemi-bar-label">形態</div>';
+        html += '<div class="zemi-spectrum-wrap">';
+        html += '<span class="zemi-spectrum-end left">ゼミ</span>';
+        html += '<div class="zemi-spectrum-bar">';
+        html += `<div class="zemi-spectrum-marker" style="left:${pos}%"><span class="zemi-spectrum-marker-label">${esc(keitai)}</span></div>`;
+        html += '</div>';
+        html += '<span class="zemi-spectrum-end right">研究室</span>';
+        html += '</div>';
+        html += '</div>';
       }
-    });
-    html += '</dl>';
+
+      // 活動時間 bar
+      if (katsudou) {
+        const parsed = parseActivityTime(katsudou);
+        const maxH = 25;
+        const leftPct = (parsed.min / maxH) * 100;
+        const widthPct = ((parsed.max - parsed.min) / maxH) * 100;
+        html += '<div class="zemi-bar-item">';
+        html += '<div class="zemi-bar-label">活動時間（週）</div>';
+        html += '<div class="zemi-range-wrap">';
+        html += '<div class="zemi-range-bar">';
+        html += `<div class="zemi-range-fill" style="left:${leftPct}%;width:${Math.max(widthPct, 2)}%"></div>`;
+        html += '</div>';
+        html += '<div class="zemi-range-ticks">';
+        for (let h = 0; h <= maxH; h += 5) {
+          html += `<span class="zemi-range-tick" style="left:${(h / maxH) * 100}%">${h}h</span>`;
+        }
+        html += '</div>';
+        html += '</div>';
+        html += `<div class="zemi-bar-value">${esc(katsudou)}時間</div>`;
+        html += '</div>';
+      }
+
+      // 院進検討率 bar
+      if (inshin) {
+        const pct = parseInt(inshin) || 0;
+        html += '<div class="zemi-bar-item">';
+        html += '<div class="zemi-bar-label">新B4の院進検討率</div>';
+        html += '<div class="zemi-pct-wrap">';
+        html += '<div class="zemi-pct-bar">';
+        html += `<div class="zemi-pct-fill" style="width:${pct}%"></div>`;
+        html += '</div>';
+        html += `<span class="zemi-pct-value">${esc(inshin)}</span>`;
+        html += '</div>';
+        html += '</div>';
+      }
+
+      html += '</div>';
+    }
+
+    // Remaining text fields
+    if (hasTextFields) {
+      html += '<dl class="modal-info">';
+      studentTextFields.forEach(([label, val]) => {
+        if (val && val.trim()) {
+          html += `<dt>${label}</dt><dd>${esc(val)}</dd>`;
+        }
+      });
+      html += '</dl>';
+    }
   }
 
   // 備考（公式）- linkify URLs
