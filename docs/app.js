@@ -4,6 +4,18 @@ let activeCategories = new Set();
 let searchQuery = '';
 let kubunFilter = '';
 
+/* ========== Zemi State ========== */
+let allZemis = [];
+let zemiSearchQuery = '';
+
+const ZEMI_FIELD_MAP = {
+  '社会科学': { key: 'social', label: '社会科学' },
+  '統計学':   { key: 'stats', label: '統計学' },
+  '情報・AI': { key: 'ai', label: '情報・AI' },
+};
+
+let activeZemiFields = new Set();
+
 /* ========== Category Mapping ========== */
 const CAT_MAP = {
   'ソーシャル・データサイエンス科目': { key: 'sds', label: 'SDS科目' },
@@ -39,6 +51,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     initModal();
   }
 
+  if (hasZemiIndex()) {
+    await loadZemis();
+    initZemiFilters();
+    renderZemis(allZemis);
+    initModal();
+  }
+
   if (hasGuideSection()) {
     loadGuide();
   }
@@ -49,6 +68,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function hasCourseIndex() {
   return Boolean(document.getElementById('card-grid'));
+}
+
+function hasZemiIndex() {
+  return Boolean(document.getElementById('zemi-grid'));
 }
 
 function hasGuideSection() {
@@ -71,13 +94,34 @@ async function loadCourses() {
 
 function parseCSV(text) {
   const lines = text.trim().split('\n');
-  // skip header
+  const headers = parseCSVRow(lines[0]);
   return lines.slice(1).map(line => {
-    const cols = line.split(',');
+    const cols = parseCSVRow(line);
     const obj = {};
-    HEADERS.forEach((h, i) => { obj[h] = (cols[i] || '').trim(); });
+    headers.forEach((h, i) => { obj[h] = (cols[i] || '').trim(); });
     return obj;
   });
+}
+
+function parseCSVRow(row) {
+  const cols = [];
+  let cur = '';
+  let inQuotes = false;
+  for (let i = 0; i < row.length; i++) {
+    const ch = row[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (row[i + 1] === '"') { cur += '"'; i++; }
+        else { inQuotes = false; }
+      } else { cur += ch; }
+    } else {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { cols.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+  }
+  cols.push(cur);
+  return cols;
 }
 
 
@@ -364,6 +408,229 @@ function esc(str) {
   const el = document.createElement('span');
   el.textContent = str;
   return el.innerHTML;
+}
+
+function linkify(html) {
+  return html.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+}
+
+/* ========== Zemi Loading ========== */
+async function loadZemis() {
+  try {
+    const res = await fetch('./zemi.csv');
+    const text = await res.text();
+    allZemis = parseCSV(text);
+  } catch (e) {
+    const grid = document.getElementById('zemi-grid');
+    if (grid) grid.innerHTML = '<p class="loading">データの読み込みに失敗しました。</p>';
+  }
+}
+
+/* ========== Zemi Rendering ========== */
+function renderZemis(zemis) {
+  const grid = document.getElementById('zemi-grid');
+  const count = document.getElementById('zemi-count');
+
+  if (zemis.length === 0) {
+    grid.innerHTML = '<p class="loading">該当するゼミがありません。</p>';
+    count.textContent = '';
+    return;
+  }
+
+  count.textContent = allZemis.length === zemis.length
+    ? `${zemis.length} ゼミ`
+    : `${allZemis.length} ゼミ中 ${zemis.length} 件表示`;
+
+  grid.innerHTML = '';
+  zemis.forEach((z, i) => grid.appendChild(createZemiCard(z, i)));
+}
+
+function createZemiCard(zemi, index) {
+  const card = document.createElement('div');
+  card.className = 'card zemi-card';
+  card.style.setProperty('--stagger', `${Math.min(index * 0.02, 0.24)}s`);
+  card.addEventListener('click', () => openZemiModal(zemi));
+
+  // Badge row
+  const fieldInfo = ZEMI_FIELD_MAP[zemi['分野']];
+  if (fieldInfo) {
+    const badgeRow = document.createElement('div');
+    badgeRow.className = 'card-badges';
+    const fieldBadge = document.createElement('span');
+    fieldBadge.className = `card-cat zemi-field-${fieldInfo.key}`;
+    fieldBadge.textContent = fieldInfo.label;
+    badgeRow.appendChild(fieldBadge);
+    card.appendChild(badgeRow);
+  }
+
+  // Professor name
+  const name = document.createElement('div');
+  name.className = 'card-name';
+  name.textContent = zemi['教員名'];
+  card.appendChild(name);
+
+  // Research theme preview
+  if (zemi['研究テーマ']) {
+    const theme = document.createElement('div');
+    theme.className = 'card-meta zemi-content-preview';
+    const text = zemi['研究テーマ'];
+    theme.textContent = text.length > 50 ? text.slice(0, 50) + '…' : text;
+    card.appendChild(theme);
+  }
+
+  // Stats row
+  const statsRow = document.createElement('div');
+  statsRow.className = 'zemi-stats';
+
+  if (zemi['受入予定人数']) {
+    const cap = document.createElement('span');
+    cap.className = 'zemi-stat';
+    cap.textContent = '定員 ' + zemi['受入予定人数'];
+    statsRow.appendChild(cap);
+  }
+
+  if (statsRow.children.length) card.appendChild(statsRow);
+
+  // Empty state
+  if (!zemi['研究テーマ'] && !zemi['活動時間_週'] && !zemi['3年次の内容']) {
+    const empty = document.createElement('div');
+    empty.className = 'card-meta';
+    empty.textContent = '詳細情報なし';
+    empty.style.fontStyle = 'italic';
+    card.appendChild(empty);
+  }
+
+  return card;
+}
+
+/* ========== Zemi Modal ========== */
+function openZemiModal(zemi) {
+  const body = document.getElementById('modal-body');
+  const overlay = document.getElementById('modal-overlay');
+  if (!body || !overlay) return;
+
+  let html = '';
+
+  // Badge
+  const fieldInfo = ZEMI_FIELD_MAP[zemi['分野']];
+  if (fieldInfo) {
+    html += `<span class="modal-cat zemi-field-${fieldInfo.key}">${fieldInfo.label}</span>`;
+  }
+
+  html += `<h2 class="modal-name">${esc(zemi['教員名'])}</h2>`;
+
+  // Official info section
+  const officialFields = [
+    ['研究テーマ', zemi['研究テーマ']],
+    ['受入予定人数', zemi['受入予定人数']],
+    ['選考基準', zemi['選考基準']],
+    ['推奨科目（公式）', zemi['推奨科目（公式）']],
+    ['副ゼミ情報', zemi['副ゼミ情報']],
+  ];
+
+  const hasOfficial = officialFields.some(([, val]) => val && val.trim());
+
+  if (hasOfficial) {
+    html += '<p class="grade-section-title">公式情報</p>';
+    html += '<dl class="modal-info">';
+    officialFields.forEach(([label, val]) => {
+      if (val && val.trim()) {
+        html += `<dt>${label}</dt><dd>${esc(val)}</dd>`;
+      }
+    });
+    html += '</dl>';
+  }
+
+  // Student info section
+  const studentFields = [
+    ['活動時間（週）', zemi['活動時間_週'] ? zemi['活動時間_週'] + ' 時間' : ''],
+    ['院進検討率', zemi['院進検討率']],
+    ['新B4の人数', zemi['新B4の人数'] ? zemi['新B4の人数'] + '人' : ''],
+    ['3年次の内容', zemi['3年次の内容']],
+    ['取っておいた方がいい授業', zemi['取っておいた方がいい授業']],
+    ['やったイベント', zemi['やったイベント']],
+    ['来年のゼミの構成', zemi['来年のゼミの構成（学部生除く）（判明分）']],
+    ['使えるリソース', zemi['使えるリソース']],
+    ['外部との連携', zemi['外部との連携']],
+    ['進路（学部卒）', zemi['進路(学部卒)']],
+    ['進路（院卒）', zemi['進路(院卒)']],
+  ];
+
+  const hasStudent = studentFields.some(([, val]) => val && val.trim());
+
+  if (hasStudent) {
+    html += '<p class="grade-section-title">学生情報</p>';
+    html += '<dl class="modal-info">';
+    studentFields.forEach(([label, val]) => {
+      if (val && val.trim()) {
+        html += `<dt>${label}</dt><dd>${esc(val)}</dd>`;
+      }
+    });
+    html += '</dl>';
+  }
+
+  // 備考（公式）- linkify URLs
+  if (zemi['備考（公式）'] && zemi['備考（公式）'].trim()) {
+    html += '<p class="grade-section-title">備考</p>';
+    html += `<div class="modal-desc">${linkify(esc(zemi['備考（公式）']))}</div>`;
+  }
+
+  if (!hasOfficial && !hasStudent) {
+    html += '<p class="no-grade-data">詳細情報はまだ登録されていません。</p>';
+  }
+
+  body.innerHTML = html;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+/* ========== Zemi Filters ========== */
+function initZemiFilters() {
+  const fieldContainer = document.getElementById('zemi-field-filters');
+  if (fieldContainer) {
+    Object.entries(ZEMI_FIELD_MAP).forEach(([fullName, info]) => {
+      const btn = document.createElement('button');
+      btn.className = 'cat-btn';
+      btn.dataset.cat = info.key;
+      btn.dataset.fullName = fullName;
+      btn.textContent = info.label;
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        if (activeZemiFields.has(fullName)) {
+          activeZemiFields.delete(fullName);
+        } else {
+          activeZemiFields.add(fullName);
+        }
+        applyZemiFilters();
+      });
+      fieldContainer.appendChild(btn);
+    });
+  }
+
+  const searchInput = document.getElementById('zemi-search');
+  if (!searchInput) return;
+
+  let timer;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      zemiSearchQuery = searchInput.value;
+      applyZemiFilters();
+    }, 200);
+  });
+}
+
+function applyZemiFilters() {
+  const filtered = allZemis.filter(z => {
+    if (activeZemiFields.size > 0 && !activeZemiFields.has(z['分野'])) return false;
+    if (zemiSearchQuery) {
+      const q = zemiSearchQuery.toLowerCase();
+      const haystack = (z['教員名'] + z['研究テーマ'] + z['3年次の内容'] + z['取っておいた方がいい授業'] + z['使えるリソース'] + z['分野']).toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+  renderZemis(filtered);
 }
 
 /* ========== Hamburger Menu ========== */

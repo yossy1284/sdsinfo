@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>科目ページ | SDS情報ポータル</title>
+  <title>ゼミ情報 | SDS情報ポータル</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
       <p class="sidebar-title">目次</p>
       <nav class="sidebar-nav">
         <a href="#overview" class="nav-link active">概要</a>
-        <a href="#courses" class="nav-link">科目索引</a>
+        <a href="#zemis" class="nav-link">ゼミ索引</a>
         <a href="#sources" class="nav-link">出典と注意事項</a>
       </nav>
     </aside>
@@ -49,49 +49,41 @@
     <main class="wiki-main">
       <section id="overview" class="section article-section">
         <div class="article-head">
-          <h1 class="article-title">授業検索</h1>
-          <p class="article-sub">科目検索・絞り込み・詳細比較のためのインデックスページ</p>
+          <h1 class="article-title">ゼミ情報</h1>
+          <p class="article-sub">SDS学部の研究室・ゼミの活動内容、雰囲気、進路情報を比較</p>
         </div>
         <div class="intro-grid">
           <div class="intro-text">
-            <p>カテゴリ・科目区分・キーワードで科目を絞り込み、成績分布や難易度を比較できます。カードをクリックすると詳細情報を表示します。</p>
-            <p>制度面の基礎知識は <a href="rishu.html">履修情報ページ</a> を参照してください。</p>
+            <p>各教員のゼミ・研究室について、研究テーマ、受入人数、選考基準などの公式情報と、活動時間、院進率、進路情報などの学生情報を一覧で比較できます。カードをクリックすると詳細情報を表示します。</p>
+            <p>公式情報はゼミナール紹介文（2026年度選考用）に基づきます。学生情報は2025年度在籍学生へのヒアリングによる非公式情報です。</p>
           </div>
           <aside class="infobox" aria-label="ページ情報">
             <h2 class="infobox-title">ページ情報</h2>
             <dl class="infobox-list">
               <dt>ページ種別</dt>
-              <dd>科目索引</dd>
+              <dd>ゼミ索引</dd>
               <dt>主な用途</dt>
-              <dd>科目比較・検索</dd>
+              <dd>ゼミ比較・検索</dd>
               <dt>データ元</dt>
-              <dd>courses.csv</dd>
+              <dd>ゼミ情報.csv</dd>
             </dl>
-          </aside> 
+          </aside>
         </div>
       </section>
 
-      <section id="courses" class="section article-section">
-        <h2 class="section-title">科目索引</h2>
+      <section id="zemis" class="section article-section">
+        <h2 class="section-title">ゼミ索引</h2>
 
         <div class="filter-bar">
-          <input type="text" id="search" class="search-input" placeholder="科目名・教員名で検索…">
+          <input type="text" id="zemi-search" class="search-input" placeholder="教員名・研究テーマ・分野で検索…">
           <div class="filter-group">
-            <div class="category-filters" id="category-filters"></div>
-            <select id="kubun-filter" class="filter-select">
-              <option value="">全科目区分</option>
-              <option value="学部導入科目">学部導入科目</option>
-              <option value="学部基礎科目">学部基礎科目</option>
-              <option value="学部発展科目">学部発展科目</option>
-              <option value="ゼミ関連">ゼミ関連</option>
-              <option value="全学共通科目">全学共通科目</option>
-            </select>
+            <div class="category-filters" id="zemi-field-filters"></div>
           </div>
         </div>
 
-        <p class="result-count" id="result-count"></p>
+        <p class="result-count" id="zemi-count"></p>
 
-        <div class="card-grid" id="card-grid">
+        <div class="card-grid" id="zemi-grid">
           <p class="loading">読み込み中…</p>
         </div>
       </section>
@@ -100,7 +92,9 @@
         <h2 class="section-title">出典と注意事項</h2>
         <ul class="source-list">
           <li>本ページは学生有志による非公式資料です。</li>
-          <li>正確な情報は必ず CELS シラバス、学士課程ガイドブック、学部公式案内を参照してください。</li>
+          <li>「公式情報」セクション（研究テーマ、受入人数、選考基準、推奨科目、副ゼミ情報）はゼミナール紹介文（2026年度選考用）に基づきます。</li>
+          <li>「学生情報」セクション（活動時間、院進率、進路等）は在籍学生へのヒアリングに基づいており、教員の公式見解ではありません。</li>
+          <li>正確な情報は各教員のオフィスアワーや学部公式案内を参照してください。</li>
           <li>誤りや更新依頼は <a href="https://x.com/SDS_info2024" target="_blank" rel="noopener noreferrer">@SDS_info2024</a> へ連絡してください。</li>
         </ul>
       </section>
@@ -108,7 +102,7 @@
   </div>
 
   <div class="modal-overlay" id="modal-overlay">
-    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="科目詳細">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="ゼミ詳細">
       <button class="modal-close" id="modal-close" aria-label="閉じる">&times;</button>
       <div class="modal-body" id="modal-body"></div>
     </div>

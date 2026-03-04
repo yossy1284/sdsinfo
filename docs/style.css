@@ -24,6 +24,14 @@
   --kubun-seminar: #7c3aed;
   --kubun-common: #6b7280;
 
+  --zemi-lab: #1d4ed8;
+  --zemi-zemi: #059669;
+  --zemi-mid: #ca8a04;
+
+  --zemi-social: #f28c28;
+  --zemi-stats: #2f80ed;
+  --zemi-ai: #7e57c2;
+
   --grade-aplus: #1d4ed8;
   --grade-a: #059669;
   --grade-b: #ca8a04;
@@ -584,6 +592,13 @@ a:hover {
   align-items: center;
 }
 
+.filter-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 .category-filters {
   display: flex;
   flex-wrap: wrap;
@@ -900,6 +915,48 @@ a:hover {
   width: 10px;
   height: 10px;
   border-radius: 3px;
+}
+
+/* ========== Zemi Type Badges ========== */
+.zemi-type-lab  { background: var(--zemi-lab); color: #fff; }
+.zemi-type-zemi { background: var(--zemi-zemi); color: #fff; }
+.zemi-type-mid  { background: var(--zemi-mid); color: #fff; }
+
+.cat-btn[data-cat="lab"].active  { background: var(--zemi-lab); }
+.cat-btn[data-cat="zemi"].active { background: var(--zemi-zemi); }
+.cat-btn[data-cat="mid"].active  { background: var(--zemi-mid); }
+
+/* ========== Zemi Field Badges ========== */
+.zemi-field-social { background: var(--zemi-social); color: #fff; }
+.zemi-field-stats  { background: var(--zemi-stats); color: #fff; }
+.zemi-field-ai     { background: var(--zemi-ai); color: #fff; }
+
+.cat-btn[data-cat="social"].active { background: var(--zemi-social); }
+.cat-btn[data-cat="stats"].active  { background: var(--zemi-stats); }
+.cat-btn[data-cat="ai"].active     { background: var(--zemi-ai); }
+
+/* ========== Zemi Card Stats ========== */
+.zemi-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+}
+
+.zemi-stat {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--bg-soft);
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+}
+
+.zemi-content-preview {
+  margin-top: 0.35rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
 }
 
 .no-grade-data {
