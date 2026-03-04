@@ -1280,6 +1280,57 @@ a:hover {
   overflow: hidden;
 }
 
+.x-profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.3rem;
+  padding: 1.5rem 1rem;
+}
+
+.x-profile-icon {
+  font-size: 2.4rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.x-profile-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.x-profile-handle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.x-profile-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  max-width: 32ch;
+  line-height: 1.6;
+}
+
+.x-profile-btn {
+  display: inline-block;
+  margin-top: 0.8rem;
+  border: 1px solid #d4c82b;
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #3b3f46;
+  background: #f7f2b5;
+  transition: background 0.18s;
+}
+
+.x-profile-btn:hover {
+  text-decoration: none;
+  background: #f0e97d;
+}
+
 @media (max-width: 720px) {
   .news-twitter-grid {
     grid-template-columns: 1fr;
