@@ -411,14 +411,26 @@ function esc(str) {
 }
 
 function parseActivityTime(str) {
-  const s = str.replace(/[〜～]/g, '~');
+  const isApprox = /程度/.test(str);
+  const hasUnit = /時間/.test(str);
+  const label = hasUnit ? str : str + '時間';
+  const s = str.replace(/時間程度$/, '').replace(/時間$/, '').replace(/[〜～]/g, '~');
   const range = s.match(/(\d+)\s*~\s*(\d+)/);
-  if (range) return { min: parseInt(range[1]), max: parseInt(range[2]) };
+  if (range) {
+    return { min: parseInt(range[1]), max: parseInt(range[2]), label };
+  }
   const prefix = s.match(/^~\s*(\d+)/);
-  if (prefix) return { min: 0, max: parseInt(prefix[1]) };
+  if (prefix) {
+    return { min: 0, max: parseInt(prefix[1]), label };
+  }
   const num = parseInt(s);
-  if (!isNaN(num)) return { min: num, max: num };
-  return { min: 0, max: 0 };
+  if (!isNaN(num)) {
+    if (isApprox) {
+      return { min: Math.max(0, num - 5), max: num + 5, label };
+    }
+    return { min: num, max: num, label };
+  }
+  return { min: 0, max: 0, label: '' };
 }
 
 function linkify(html) {
@@ -613,11 +625,11 @@ function openZemiModal(zemi) {
         html += '</div>';
         html += '<div class="zemi-range-ticks">';
         for (let h = 0; h <= maxH; h += 5) {
-          html += `<span class="zemi-range-tick" style="left:${(h / maxH) * 100}%">${h}h</span>`;
+          html += `<span class="zemi-range-tick" style="left:${(h / maxH) * 100}%">${h === maxH ? h + 'h〜' : h + 'h'}</span>`;
         }
         html += '</div>';
         html += '</div>';
-        html += `<div class="zemi-bar-value">${esc(katsudou)}時間</div>`;
+        html += `<div class="zemi-bar-value">${esc(parsed.label)}</div>`;
         html += '</div>';
       }
 
