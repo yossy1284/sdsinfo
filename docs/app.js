@@ -16,6 +16,28 @@ const ZEMI_FIELD_MAP = {
 
 let activeZemiFields = new Set();
 
+/* ========== 志望者数速報 (3/18 15:00時点) ========== */
+const ZEMI_APPLICANTS = {
+  '七丈直弘': 1,
+  '福田玄明': 6,
+  '今井晋': 0,
+  '小町守': 1,
+  '鈴木真介': 2,
+  '寺田麻佑': 1,
+  '檜山敦': 0,
+  '渡部敏明': 0,
+  'WOO YU JIN': 1,
+  '植松良公': 5,
+  '加藤諒': 4,
+  '欅惇志': 5,
+  '清水千弘': 5,
+  '城田慎一郎': 0,
+  '永山晋': 1,
+  '坂野遼平': 3,
+  '本武陽一': 1,
+  '谷田川達也': 1,
+};
+
 /* ========== Category Mapping ========== */
 const CAT_MAP = {
   'ソーシャル・データサイエンス科目': { key: 'sds', label: 'SDS科目' },
@@ -561,6 +583,14 @@ function createZemiCard(zemi, index) {
     cap.className = 'zemi-stat';
     cap.textContent = '定員 ' + zemi['受入予定人数'];
     statsRow.appendChild(cap);
+  }
+
+  const applicants = ZEMI_APPLICANTS[zemi['教員名']];
+  if (applicants != null) {
+    const appStat = document.createElement('span');
+    appStat.className = 'zemi-stat zemi-stat-applicants';
+    appStat.textContent = '志望 ' + applicants + '人';
+    statsRow.appendChild(appStat);
   }
 
   if (statsRow.children.length) card.appendChild(statsRow);

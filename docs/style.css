@@ -1036,6 +1036,12 @@ a:hover {
   padding: 0.18rem 0.55rem;
 }
 
+.zemi-stat-applicants {
+  background: #fff3cd;
+  color: #856404;
+  font-weight: 700;
+}
+
 .zemi-content-preview {
   margin-top: 0.35rem;
   font-size: 0.84rem;
